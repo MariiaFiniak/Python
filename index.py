@@ -31,17 +31,47 @@ def get_id(tasks):
 	while True:
 	try:
 	status=int(input("Please,enter status task(1-low,2-middle,3-high):"))
-	if priority==1:
+	if status==1:
 	return "low"
-	elif priority==2:
+	elif status==2:
 	return "middle"
-	elif priority==3:
+	elif status==3:
 	return "high"
 	else:
 	print("Please,enter  a numberfrom 1-3 ")	
 	except ValueError:
 	print("Incorrect number")
-# 4-write
+	def ask():
+	while True:
+		try:
+		print("1.Create a task")
+		print("2.Update a task")
+		print("3.View a task")
+		print("4.Delete a task")
+		print("5.Search(Enter ID:)")
+		print("6.Exit.")
+		user_choice=int(input("Select an action:"))
+		if user_choice==1:
+		get_task(task)
+		print("Task created")
+		elif user_choice==2:
+		update_task()
+		elif user_choice==3:
+		view_task()
+		elif user_choice==4:
+		delete_task()
+		elif user_choice==5:
+		sort_task()
+		elif user_choice==6:
+		print("You are out")
+		break
+		except ValueError:
+		print("Please enter number task")
+		ask()
+		
+
+
+# -write
 	def write_task(tasks):
 		with open("tasks.txt","w") as file:
 			file.write(tasks_to_string(tasks))
@@ -61,11 +91,11 @@ def get_id(tasks):
 			except FileNotFoundError:
 			print("Not found file.")
 			return tasks
-			# 5-sort
+			# -sort
 			def sort_task():
 			view_task()
 			sort_priority_status=input("Sort(priority/status):")
-			# 6-view
+			# -view
 		def view_task():
 		try:
 		with open("task.txt","r")	as file:
@@ -74,7 +104,7 @@ def get_id(tasks):
 		except FileNotFoundError:
 			print("Not found file.")
 			return content
-			# 7-delete
+			# -delete
 			def delete_task():
 			view_task()
 			try:
@@ -86,7 +116,7 @@ def get_id(tasks):
 			else print("Task with ID not find")
 			except ValueError:
 			print("Please,enter correct number.")
-			# 8-update
+			# update
 			def update_task():
 			view_task()
 			try:
