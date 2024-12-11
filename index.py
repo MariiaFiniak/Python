@@ -1,148 +1,126 @@
-tasks={}
-# 1-id
+
+
+tasks = {}
+
 def get_id(tasks):
-	if not len(tasks):
-		return 1
-	return max(tasks.keys())+1
-# 2-string task
-	def tasks_to_string(tasks):
-		result=""
-		for task_id,task_values in tasks.items():
-			result+=f'{task_id}:{task_values['title']}|{task_values['desk']}|{task_values['priority']}|{task_value['status']}\n
-			return result
-			# 3-priority
-	def priority_tasks():
-	try:
-	while True:
-	priority==int(input("Choose priority task(1-low,2-middle,3-high):"))
-	if priority==1:
-	return "low"
-	elif priority==2:
-	return "middle"
-	elif priority==3:
-	return "high"
-	else:
-	print("Please,enter  a numberfrom 1-3 ")	
-	except ValueError:
-	print("Incorrect number")
-	save_task(priority)
-	# status
-	def status():
-	while True:
-	try:
-	status=int(input("Please,enter status task(1-low,2-middle,3-high):"))
-	if status==1:
-	return "low"
-	elif status==2:
-	return "middle"
-	elif status==3:
-	return "high"
-	else:
-	print("Please,enter  a numberfrom 1-3 ")	
-	except ValueError:
-	print("Incorrect number")
-	def ask():
-	while True:
-		try:
-		print("1.Create a task")
-		print("2.Update a task")
-		print("3.View a task")
-		print("4.Delete a task")
-		print("5.Search(Enter ID:)")
-		print("6.Exit.")
-		user_choice=int(input("Select an action:"))
-		if user_choice==1:
-		get_task(task)
-		print("Task created")
-		elif user_choice==2:
-		update_task()
-		elif user_choice==3:
-		view_task()
-		elif user_choice==4:
-		delete_task()
-		elif user_choice==5:
-		sort_task()
-		elif user_choice==6:
-		print("You are out")
-		break
-		except ValueError:
-		print("Please enter number task")
-		ask()
-		
+    return max(tasks.keys(), default=0) + 1
 
+def tasks_to_string(tasks):
+    result = ""
+    for task_id, task_values in tasks.items():
+        result += f"{task_id}:{task_values['title']}|{task_values['desk']}|{task_values['priority']}|{task_values['status']}\n"
+    return result
 
-# -write
-	def write_task(tasks):
-		with open("tasks.txt","w") as file:
-			file.write(tasks_to_string(tasks))
-			def read_task(filename):
-			try:
-			with open(filename,"r") as files:
-			for line in file:
-			parts=line.strip(split("|"))
-			if len(parts)==5:
-			task_id=int(parts[0])[:-1]
-			tasks[tasl_id]={
-				"title":parts[1],
-				"desk":parts[2],
-				"priority_text":parts[3],
-				"status":parts[4]
-			}
-			except FileNotFoundError:
-			print("Not found file.")
-			return tasks
-			# -sort
-			def sort_task():
-			view_task()
-			sort_priority_status=input("Sort(priority/status):")
-			# -view
-		def view_task():
-		try:
-		with open("task.txt","r")	as file:
-		content=file.read()
-		print(content)
-		except FileNotFoundError:
-			print("Not found file.")
-			return content
-			# -delete
-			def delete_task():
-			view_task()
-			try:
-			delete_coice=int(input("Please,enter ID:"))
-			if delete_choice in tasks:
-			del task[delete_choice]
-			save_task(task)
-			print(f"Task c ID{delete_choice}delete")
-			else print("Task with ID not find")
-			except ValueError:
-			print("Please,enter correct number.")
-			# update
-			def update_task():
-			view_task()
-			try:
-			update=int(input("Please,enter ID task:"))
-			if update in tasks:
-			new_title=input("Please,enter new name task:")
-			new_desc=input("Please,enter new description task")
-			priority=prioryti_def()
-			status=status_def()
-			task[update]={
-				"title":new_title,
-				"desc":new_desc,
-				"priority":priority,
-				"status":status
-			}
-			with open("tasks.txt","w") as file:
-			content=save_task(task)
-			file.write.__str__(content)
-			else:
-			print("Task with ID not find.")
-			except ValueError:
-			print("Please,enter number")
-			except TabError:
-			print("Updated")
-		
+def priority_tasks():
+    while True:
+        try:
+            priority = int(input("Choose priority (1-low, 2-middle, 3-high): "))
+            if priority == 1:
+                return "low"
+            elif priority == 2:
+                return "middle"
+            elif priority == 3:
+                return "high"
+            else:
+                print("Please enter a number between 1 and 3.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
+def status_tasks():
+    while True:
+        try:
+            status = int(input("Enter status (1-not started, 2-in progress, 3-completed): "))
+            if status == 1:
+                return "not started"
+            elif status == 2:
+                return "in progress"
+            elif status == 3:
+                return "completed"
+            else:
+                print("Please enter a number between 1 and 3.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
+def create_task(tasks):
+    task_id = get_id(tasks)
+    title = input("Enter task title: ")
+    desk = input("Enter task description: ")
+    priority = priority_tasks()
+    status = status_tasks()
+    tasks[task_id] = {
+        "title": title,
+        "desk": desk,
+        "priority": priority,
+        "status": status
+    }
+    save_tasks(tasks)
+    print(f"Task {task_id} created.")
 
-	
+def save_tasks(tasks):
+    with open("tasks.txt", "w") as file:
+        file.write(tasks_to_string(tasks))
+
+def read_tasks(filename):
+    tasks = {}
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                parts = line.strip().split("|")
+                if len(parts) == 4:
+                    task_id, title = parts[0].split(":")
+                    tasks[int(task_id)] = {
+                        "title": title,
+                        "desk": parts[1],
+                        "priority": parts[2],
+                        "status": parts[3]
+                    }
+    except FileNotFoundError:
+        print("File not found. Starting with an empty task list.")
+    return tasks
+
+def view_tasks(tasks):
+    if not tasks:
+        print("No tasks available.")
+    else:
+        for task_id, task in tasks.items():
+            print(f"{task_id}: {task['title']} | {task['desk']} | Priority: {task['priority']} | Status: {task['status']}")
+
+def delete_task(tasks):
+    view_tasks(tasks)
+    try:
+        delete_choice = int(input("Enter the ID of the task to delete: "))
+        if delete_choice in tasks:
+            del tasks[delete_choice]
+            save_tasks(tasks)
+            print(f"Task {delete_choice} deleted.")
+        else:
+            print("Task ID not found.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+def ask(tasks):
+    while True:
+        print("\nMenu:")
+        print("1. Create a task")
+        print("2. View tasks")
+        print("3. Delete a task")
+        print("4. Exit")
+        try:
+            choice = int(input("Choose an action: "))
+            if choice == 1:
+                create_task(tasks)
+            elif choice == 2:
+                view_tasks(tasks)
+            elif choice == 3:
+                delete_task(tasks)
+            elif choice == 4:
+                print("Exiting...")
+                break
+            else:
+                print("Invalid choice. Try again.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+if __name__ == "__main__":
+    tasks = read_tasks("tasks.txt")
+    ask(tasks)
